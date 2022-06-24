@@ -8,7 +8,7 @@ import (
 )
 
 func TestFilter(t *testing.T) {
-	results := fg.StreamOf([]int{1, 2, 3}).
+	results := fg.CollectionOf([]int{1, 2, 3}).
 		Filter(func(e int) bool {
 			if e >= 2 {
 				return true
@@ -20,7 +20,7 @@ func TestFilter(t *testing.T) {
 }
 
 func TestMap(t *testing.T) {
-	results := fg.StreamOf([]int{1, 2, 3}).
+	results := fg.CollectionOf([]int{1, 2, 3}).
 		MapString(func(e int) string {
 			return fmt.Sprintf("%d", e)
 		}).Unwrap()
@@ -33,7 +33,7 @@ func TestMap(t *testing.T) {
 
 	assertEqual(t, []string{"1", "2", "3"}, results)
 
-	intMapResults := fg.StreamOf([]int{1, 2, 3}).
+	intMapResults := fg.CollectionOf([]int{1, 2, 3}).
 		Map(func(e int) int {
 			return e + 1
 		}).Unwrap()
@@ -42,7 +42,7 @@ func TestMap(t *testing.T) {
 }
 
 func TestReduce(t *testing.T) {
-	result := fg.StreamFrom("a", "b", "c").
+	result := fg.CollectionFrom("a", "b", "c").
 		Reduce("", func(sub string, e string) string {
 			return sub + e
 		})
@@ -51,7 +51,7 @@ func TestReduce(t *testing.T) {
 }
 
 func TestSort(t *testing.T) {
-	result := fg.StreamOf([]int{3, 1, 2}).
+	result := fg.CollectionOf([]int{3, 1, 2}).
 		Sort(func(i int, j int) bool {
 			return i < j
 		}).Unwrap()
@@ -60,10 +60,10 @@ func TestSort(t *testing.T) {
 }
 
 func TestAllMatch(t *testing.T) {
-	positive := fg.StreamFrom(3, 1, 2).
+	positive := fg.CollectionFrom(3, 1, 2).
 		AllMatch(func(e int) bool { return e > 0 })
 
-	negative := fg.StreamFrom(3, 1, 2).
+	negative := fg.CollectionFrom(3, 1, 2).
 		AllMatch(func(e int) bool { return e < 0 })
 
 	assertEqual(t, true, positive)
@@ -71,10 +71,10 @@ func TestAllMatch(t *testing.T) {
 }
 
 func TestAnyMatch(t *testing.T) {
-	positive := fg.StreamFrom(3, 1, 2).
+	positive := fg.CollectionFrom(3, 1, 2).
 		AnyMatch(func(e int) bool { return e == 3 })
 
-	negative := fg.StreamFrom(3, 1, 2).
+	negative := fg.CollectionFrom(3, 1, 2).
 		AnyMatch(func(e int) bool { return e == -3 })
 
 	assertEqual(t, true, positive)
@@ -82,15 +82,15 @@ func TestAnyMatch(t *testing.T) {
 }
 
 func TestConcat(t *testing.T) {
-	results := fg.StreamFrom(1, 2).
+	results := fg.CollectionFrom(1, 2).
 		Concat([]int{3, 4}).
 		Unwrap()
 
 	assertEqual(t, []int{1, 2, 3, 4}, results)
 }
 
-func TestDisnct(t *testing.T) {
-	results := fg.StreamFrom(1, 1, 2, 2, 3, 4, 4).
+func TestDistinct(t *testing.T) {
+	results := fg.CollectionFrom(1, 1, 2, 2, 3, 4, 4).
 		Distinct().
 		Unwrap()
 
