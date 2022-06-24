@@ -74,6 +74,18 @@ func (c Collection[E]) Concat(b Collection[E]) Collection[E] {
 	return concat
 }
 
+func (c Collection[E]) Intersect(b Collection[E]) Collection[E] {
+	var intersect Collection[E]
+	for _, x := range c {
+		for _, y := range b {
+			if any(x) == any(y) {
+				intersect = append(intersect, x)
+			}
+		}
+	}
+	return intersect
+}
+
 func (c Collection[E]) Unwrap() []E {
 	return c
 }
