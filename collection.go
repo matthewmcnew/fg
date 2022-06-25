@@ -44,6 +44,10 @@ func (c Collection[E]) Map(f func(e E) E) Collection[E] {
 	return Map(c, f)
 }
 
+func (c Collection[E]) FlatMap(f func(e E) []E) Collection[E] {
+	return FlatMap(c, f)
+}
+
 func (c Collection[E]) MapString(f func(e E) string) Collection[string] {
 	return Map(c, f)
 }
@@ -109,6 +113,18 @@ func Map[E any, B any](stream Collection[E], o func(E) B) Collection[B] {
 	var mapped = Collection[B]{}
 	for _, e := range stream {
 		mapped = append(mapped, o(e))
+	}
+
+	return mapped
+}
+
+func FlatMap[E any, B any](stream Collection[E], o func(E) []B) Collection[B] {
+	var mapped = Collection[B]{}
+	for _, e := range stream {
+		toFlatten := o(e)
+		for _, i := range toFlatten {
+			mapped = append(mapped, i)
+		}
 	}
 
 	return mapped

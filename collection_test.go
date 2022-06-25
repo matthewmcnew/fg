@@ -41,6 +41,21 @@ func TestMap(t *testing.T) {
 	assertEqual(t, []int{2, 3, 4}, intMapResults)
 }
 
+func TestFlatMap(t *testing.T) {
+	results := fg.FlatMap([]int{1, 2, 3}, func(e int) []string {
+		return []string{"1", "2", "3"}[:e]
+	}).Unwrap()
+
+	assertEqual(t, []string{"1", "1", "2", "1", "2", "3"}, results)
+
+	intMapResults := fg.CollectionOf([]int{1, 2, 3}).
+		FlatMap(func(e int) []int {
+			return []int{1, 2, 3}[:e]
+		}).Unwrap()
+
+	assertEqual(t, []int{1, 1, 2, 1, 2, 3}, intMapResults)
+}
+
 func TestReduce(t *testing.T) {
 	result := fg.CollectionFrom("a", "b", "c").
 		Reduce("", func(sub string, e string) string {
