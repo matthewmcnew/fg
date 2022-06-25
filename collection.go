@@ -22,6 +22,12 @@ func (c Collection[E]) Filter(f func(e E) bool) Collection[E] {
 	return filtered
 }
 
+func (c Collection[E]) Contains(needle E) bool {
+	return c.AnyMatch(func(e E) bool {
+		return any(e) == any(needle)
+	})
+}
+
 func (c Collection[E]) AllMatch(f func(e E) bool) bool {
 	for _, e := range c {
 		if !f(e) {
@@ -107,6 +113,9 @@ func (c Collection[E]) Distinct() Collection[E] {
 		distinct = append(distinct, e)
 	}
 	return distinct
+}
+
+func (c Collection[E]) Blah() {
 }
 
 func Map[E any, B any](stream Collection[E], o func(E) B) Collection[B] {

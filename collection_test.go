@@ -96,6 +96,17 @@ func TestAnyMatch(t *testing.T) {
 	assertEqual(t, false, negative)
 }
 
+func TestContains(t *testing.T) {
+	positive := fg.CollectionFrom(3, 1, 2).
+		Contains(2)
+
+	negative := fg.CollectionFrom(3, 1, 2).
+		Contains(0)
+
+	assertEqual(t, true, positive)
+	assertEqual(t, false, negative)
+}
+
 func TestConcat(t *testing.T) {
 	results := fg.CollectionFrom(1, 2).
 		Concat([]int{3, 4}).
