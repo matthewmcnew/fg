@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/matthewmcnew/fg"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -18,6 +19,21 @@ func TestFilter(t *testing.T) {
 		}).Unwrap()
 
 	assertEqual(t, []int{2, 3}, results)
+}
+
+func TestFindFirst(t *testing.T) {
+	result, err := fg.CollectionOf([]string{"abc", "def", "ehi"}).
+		FindFirst(func(e string) bool {
+			return strings.Contains(e, "e")
+		}, "")
+	assertNil(t, err)
+	assertEqual(t, "def", result)
+
+	_, err = fg.CollectionOf([]string{"abc", "def", "ehi"}).
+		FindFirst(func(e string) bool {
+			return strings.Contains(e, "z")
+		}, "")
+	assertEqual(t, errors.New("could not find element"), err)
 }
 
 func TestMap(t *testing.T) {

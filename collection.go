@@ -1,6 +1,9 @@
 package fg
 
-import "sort"
+import (
+	"fmt"
+	"sort"
+)
 
 type Collection[E any] []E
 
@@ -20,6 +23,16 @@ func (c Collection[E]) Filter(f func(e E) bool) Collection[E] {
 		}
 	}
 	return filtered
+}
+
+func (c Collection[E]) FindFirst(f func(e E) bool, empty E) (E, error) {
+	for _, e := range c {
+		if f(e) {
+			return e, nil
+		}
+	}
+
+	return empty, fmt.Errorf("could not find element")
 }
 
 func (c Collection[E]) Contains(needle E) bool {
