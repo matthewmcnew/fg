@@ -96,6 +96,10 @@ func (c Collection[E]) Intersect(b Collection[E]) Collection[E] {
 	return intersect
 }
 
+func (c Collection[E]) ToStringMap(f func(E) string) map[string]E {
+	return ToMap(c, f, Identity[E])
+}
+
 func (c Collection[E]) Unwrap() []E {
 	return c
 }
@@ -137,4 +141,13 @@ func FlatMap[E any, B any](stream Collection[E], o func(E) []B) Collection[B] {
 	}
 
 	return mapped
+}
+
+func ToMap[E any, K comparable, V any](c Collection[E], keyMapper func(E) K, valueMapper func(E) V) map[K]V {
+	m := map[K]V{}
+	for _, e := range c {
+		m[keyMapper(e)] = valueMapper(e)
+	}
+
+	return m
 }

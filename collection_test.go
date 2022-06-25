@@ -115,6 +115,15 @@ func TestConcat(t *testing.T) {
 	assertEqual(t, []int{1, 2, 3, 4}, results)
 }
 
+func TestToMap(t *testing.T) {
+	results := fg.CollectionOf([]int{1, 2, 3}).
+		ToStringMap(func(e int) string {
+			return fmt.Sprintf("%d", e)
+		})
+
+	assertEqual(t, map[string]int{"1": 1, "2": 2, "3": 3}, results)
+}
+
 func TestIntersect(t *testing.T) {
 	results := fg.CollectionFrom(1, 2, 3).
 		Intersect([]int{2, 3, 4}).
