@@ -122,18 +122,18 @@ func (c Collection[E]) Distinct() Collection[E] {
 func (c Collection[E]) Blah() {
 }
 
-func Map[E any, B any](stream Collection[E], o func(E) B) Collection[B] {
+func Map[E any, B any](collection Collection[E], o func(E) B) Collection[B] {
 	var mapped = Collection[B]{}
-	for _, e := range stream {
+	for _, e := range collection {
 		mapped = append(mapped, o(e))
 	}
 
 	return mapped
 }
 
-func FlatMap[E any, B any](stream Collection[E], o func(E) []B) Collection[B] {
+func FlatMap[E any, B any](collection Collection[E], o func(E) []B) Collection[B] {
 	var mapped = Collection[B]{}
-	for _, e := range stream {
+	for _, e := range collection {
 		toFlatten := o(e)
 		for _, i := range toFlatten {
 			mapped = append(mapped, i)
