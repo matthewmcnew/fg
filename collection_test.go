@@ -122,6 +122,12 @@ func TestReduce(t *testing.T) {
 		})
 
 	assertEqual(t, "abc", result)
+
+	result = fg.Reduce(fg.CollectionFrom(1, 2, 3), "", func(sub string, e int) string {
+		return sub + fmt.Sprintf("%d", e)
+	})
+
+	assertEqual(t, "123", result)
 }
 
 func TestSort(t *testing.T) {

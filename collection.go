@@ -84,11 +84,7 @@ func (c Collection[E]) FlatMapE(f func(e E) ([]E, error)) (Collection[E], error)
 }
 
 func (c Collection[E]) Reduce(initial E, f func(sub E, element E) E) E {
-	for _, e := range c {
-		initial = f(initial, e)
-	}
-
-	return initial
+	return Reduce(c, initial, f)
 }
 
 func (c Collection[E]) Sort(compare func(i E, j E) bool) Collection[E] {
@@ -178,6 +174,14 @@ func FlatMapE[E any, B any](collection Collection[E], o func(E) ([]B, error)) (C
 	}
 
 	return mapped, nil
+}
+
+func Reduce[E any, B any](collection Collection[E], initial B, f func(sub B, element E) B) B {
+	for _, e := range collection {
+		initial = f(initial, e)
+	}
+
+	return initial
 }
 
 func FlatMap[E any, B any](collection Collection[E], o func(E) []B) Collection[B] {
