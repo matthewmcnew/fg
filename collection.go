@@ -126,7 +126,7 @@ func (c Collection[E]) Unwrap() []E {
 }
 
 func (c Collection[E]) Distinct() Collection[E] {
-	distinct := Collection[E]{}
+	distinct := make([]E, 0, len(c))
 	seen := map[any]struct{}{}
 	for _, e := range c {
 		_, ok := seen[e]
@@ -141,7 +141,7 @@ func (c Collection[E]) Distinct() Collection[E] {
 }
 
 func MapE[E any, B any](collection Collection[E], o func(E) (B, error)) (Collection[B], error) {
-	var mapped = Collection[B]{}
+	var mapped = make([]B, 0, len(collection))
 	for _, e := range collection {
 		b, err := o(e)
 		if err != nil {
@@ -162,18 +162,16 @@ func Map[E any, B any](collection Collection[E], o func(E) B) Collection[B] {
 }
 
 func FlatMapE[E any, B any](collection Collection[E], o func(E) ([]B, error)) (Collection[B], error) {
-	var mapped = Collection[B]{}
+	var mapped = make([][]B, 0, len(collection))
 	for _, e := range collection {
-		toFlatten, err := o(e)
+		b, err := o(e)
 		if err != nil {
 			return nil, err
 		}
-		for _, i := range toFlatten {
-			mapped = append(mapped, i)
-		}
+		mapped = append(mapped, b)
 	}
 
-	return mapped, nil
+	return flatten(mapped), nil
 }
 
 func Reduce[E any, B any](collection Collection[E], initial B, f func(sub B, element E) B) B {
@@ -199,6 +197,18 @@ func ToMap[E any, K comparable, V any](c Collection[E], keyMapper func(E) K, val
 	}
 
 	return m
+}
+
+func flatten[E any](s [][]E) []E {
+	size := 0
+	for _, e := range s {
+		size += len(e)
+	}
+	flattened := make([]E, 0, size)
+	for _, e := range s {
+		flattened = append(flattened, e...)
+	}
+	return flattened
 }
 
 func addError[E any, B any](o func(E) B) func(e E) (B, error) {
