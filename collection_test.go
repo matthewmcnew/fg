@@ -112,7 +112,11 @@ func TestFlatMapE(t *testing.T) {
 		return nil, errors.New("error")
 	})
 	assertEqual(t, errors.New("error"), err)
+}
 
+func TestFlatten(t *testing.T) {
+	ints := fg.Flatten([][]int{{1}, {2}}, [][]int{{3, 4}, {5, 6}})
+	assertEqual(t, []int{1, 2, 3, 4, 5, 6}, ints)
 }
 
 func TestReduce(t *testing.T) {

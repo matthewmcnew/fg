@@ -171,7 +171,7 @@ func FlatMapE[E any, B any](collection Collection[E], o func(E) ([]B, error)) (C
 		mapped = append(mapped, b)
 	}
 
-	return flatten(mapped), nil
+	return Flatten(mapped), nil
 }
 
 func Reduce[E any, B any](collection Collection[E], initial B, f func(sub B, element E) B) B {
@@ -199,14 +199,16 @@ func ToMap[E any, K comparable, V any](c Collection[E], keyMapper func(E) K, val
 	return m
 }
 
-func flatten[E any](s [][]E) []E {
+func Flatten[E any](s ...[][]E) []E {
 	size := 0
 	for _, e := range s {
 		size += len(e)
 	}
 	flattened := make([]E, 0, size)
-	for _, e := range s {
-		flattened = append(flattened, e...)
+	for _, t := range s {
+		for _, e := range t {
+			flattened = append(flattened, e...)
+		}
 	}
 	return flattened
 }
