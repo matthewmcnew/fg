@@ -118,7 +118,7 @@ func (c Collection[E]) Intersect(b Collection[E]) Collection[E] {
 }
 
 func (c Collection[E]) ToStringMap(f func(E) string) map[string]E {
-	return ToMap(c, f, Identity[E])
+	return ToMap(c, f, Identity[E]())
 }
 
 func (c Collection[E]) Unwrap() []E {
