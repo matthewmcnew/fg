@@ -51,3 +51,9 @@ func (f Function[E, B]) AndThen(c Function[B, B]) Function[E, B] {
 func Identity[E any]() Function[E, E] {
 	return func(e E) E { return e }
 }
+
+func Compose[E any, B any, C any](a Function[E, B], b Function[B, C]) Function[E, C] {
+	return func(e E) C {
+		return b(a(e))
+	}
+}
