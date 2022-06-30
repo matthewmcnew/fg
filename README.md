@@ -107,7 +107,7 @@ MapE allows map to be called with a mapping function that returns an error.
 
 ```go
     func addPrefix(e string) (string, error) {
-		if strings.Contains(e, "badword") {
+        if strings.Contains(e, "badword") {
 			return "", errors.New("we don't accept bad words around here")
         }   
 		
@@ -186,7 +186,7 @@ A predicate is a function that returns true or false from a given type. The meth
     }
 
     containsA("ABC") //true
-	containsA.Negate()("ABC") // false
+    containsA.Negate()("ABC") // false
     containsA.Or(containsB)("BCD") // true
     containsA.And(containsB)("BCD") // false
     containsA.Xor(containsB)("ABC") // false
