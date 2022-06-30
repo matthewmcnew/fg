@@ -48,6 +48,12 @@ func (f Function[E, B]) AndThen(c Function[B, B]) Function[E, B] {
 	}
 }
 
+func (f Function[E, B]) WithError() FunctionE[E, B] {
+	return func(e E) (B, error) {
+		return f(e), nil
+	}
+}
+
 func Identity[E any]() Function[E, E] {
 	return func(e E) E { return e }
 }
@@ -57,3 +63,5 @@ func Compose[E any, B any, C any](a Function[E, B], b Function[B, C]) Function[E
 		return b(a(e))
 	}
 }
+
+type FunctionE[E any, B any] func(e E) (B, error)

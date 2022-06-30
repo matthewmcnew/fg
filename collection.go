@@ -154,7 +154,7 @@ func MapE[E any, B any](collection Collection[E], o func(E) (B, error)) (Collect
 }
 
 func Map[E any, B any](collection Collection[E], o func(E) B) Collection[B] {
-	results, err := MapE(collection, addError(o))
+	results, err := MapE(collection, Function[E, B](o).WithError())
 	if err != nil {
 		panic("unexpected err")
 	}
@@ -183,7 +183,7 @@ func Reduce[E any, B any](collection Collection[E], initial B, f func(sub B, ele
 }
 
 func FlatMap[E any, B any](collection Collection[E], o func(E) []B) Collection[B] {
-	results, err := FlatMapE(collection, addError(o))
+	results, err := FlatMapE(collection, Function[E, []B](o).WithError())
 	if err != nil {
 		panic("unexpected error")
 	}
@@ -211,10 +211,4 @@ func Flatten[E any](s ...[][]E) []E {
 		}
 	}
 	return flattened
-}
-
-func addError[E any, B any](o func(E) B) func(e E) (B, error) {
-	return func(e E) (B, error) {
-		return o(e), nil
-	}
 }
