@@ -205,7 +205,7 @@ Compose allows functions to be composed
         return len(s)
     }
 
-	lenOfFirstElement := fg.Compose(firstElement, lengthOfString)
+    lenOfFirstElement := fg.Compose(firstElement, lengthOfString)
 
     lenOfFirstElement([]string{"ab", "bcd"}) //2
 ```
