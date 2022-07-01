@@ -88,10 +88,15 @@ func (c Collection[E]) Reduce(initial E, f func(sub E, element E) E) E {
 }
 
 func (c Collection[E]) Sort(compare func(i E, j E) bool) Collection[E] {
-	sort.Slice(c, func(i, j int) bool {
-		return compare(c[i], c[j])
+	copy := make([]E, len(c))
+	for i, e := range c {
+		copy[i] = e
+	}
+
+	sort.Slice(copy, func(i, j int) bool {
+		return compare(copy[i], copy[j])
 	})
-	return c
+	return copy
 }
 
 func (c Collection[E]) Concat(b Collection[E]) Collection[E] {

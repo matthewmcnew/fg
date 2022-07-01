@@ -135,7 +135,7 @@ func TestReduce(t *testing.T) {
 }
 
 func TestSort(t *testing.T) {
-	result := fg.CollectionOf([]int{3, 1, 2}).
+	result := fg.CollectionFrom(3, 1, 2).
 		Sort(func(i int, j int) bool {
 			return i < j
 		}).Unwrap()

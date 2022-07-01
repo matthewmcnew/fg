@@ -160,6 +160,19 @@ To Map allows you to convert a collection to a Map with a key mapping function.
     fg.CollectionFrom(1, 2).ToStringMap(intToString) // map[string]int{"1": 1, "2": 2}
 ```
 
+#### Sort
+
+Sorts returns a copy of the list sorted with the provided compare function 
+
+```go
+    sorted := fg.CollectionFrom(3, 1, 2).Sort(func(i int, j int) bool {
+        return i < j
+    }) 
+	
+	sorted // []int{1, 2, 3} 
+```
+
+
 #### Chaining
 
 Collection Methods can be chained to support multiple operations in a sequence
