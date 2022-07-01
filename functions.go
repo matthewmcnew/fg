@@ -65,3 +65,14 @@ func Compose[E any, B any, C any](a Function[E, B], b Function[B, C]) Function[E
 }
 
 type FunctionE[E any, B any] func(e E) (B, error)
+
+func ComposeE[E any, B any, C any](a FunctionE[E, B], b FunctionE[B, C], zero C) FunctionE[E, C] {
+	return func(e E) (C, error) {
+		z, err := a(e)
+		if err != nil {
+			return zero, err
+		}
+
+		return b(z)
+	}
+}
