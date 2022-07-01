@@ -146,6 +146,13 @@ Reduce allows you to reduce a collection by running each result through the prov
 To Map allows you to convert a collection to a Map with a key mapping function. 
 
 ```go
+    func carToId(c Car) int {
+        return c.Id
+    }
+
+    fg.ToMap([]Car{{Name: "my-car", Id: 27}}, carToId) // map[int]Car{27: Car{{Name: "my-car", Id: 27}}
+
+
     func intToString(e int) string {
         return fmt.Sprintf("%d", e)
     }
