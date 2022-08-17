@@ -143,6 +143,14 @@ func TestSort(t *testing.T) {
 	assertEqual(t, []int{1, 2, 3}, result)
 }
 
+func TestSortBy(t *testing.T) {
+	result := fg.SortBy(fg.CollectionFrom("a", "zzz", "cc"), func(a string) int {
+		return len(a)
+	}).Unwrap()
+
+	assertEqual(t, []string{"zzz", "cc", "a"}, result)
+}
+
 func TestAllMatch(t *testing.T) {
 	positive := fg.CollectionFrom(3, 1, 2).
 		AllMatch(func(e int) bool { return e > 0 })

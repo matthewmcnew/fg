@@ -2,6 +2,7 @@ package fg
 
 import (
 	"fmt"
+	"golang.org/x/exp/constraints"
 	"sort"
 )
 
@@ -216,4 +217,10 @@ func Flatten[E any](s ...[][]E) []E {
 		}
 	}
 	return flattened
+}
+
+func SortBy[E any, K constraints.Ordered](c Collection[E], sortBy func(i E) K) Collection[E] {
+	return c.Sort(func(i, j E) bool {
+		return sortBy(i) > sortBy(j)
+	})
 }
